@@ -30,6 +30,7 @@ public class ExplorarViewModel extends AndroidViewModel {
         if (bienvenidaYaMostrada){
             return;
         }
+        bienvenidaYaMostrada = true;
 
         accionDialogo.setValue(0);
 
@@ -37,7 +38,6 @@ public class ExplorarViewModel extends AndroidViewModel {
             @Override
             public void onSuccess(String nombre) {
                 nombreUsuario.postValue(nombre);
-                bienvenidaYaMostrada = true;
 
                 if (nombre != null && !nombre.isEmpty()) {
                     buscarPendienteAleatorio();
@@ -48,7 +48,6 @@ public class ExplorarViewModel extends AndroidViewModel {
 
             @Override
             public void onError(String message) {
-                bienvenidaYaMostrada = true;
                 accionDialogo.postValue(1);
             }
         });

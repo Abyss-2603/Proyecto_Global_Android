@@ -81,10 +81,14 @@ public class ExplorarFragment extends Fragment {
         viewModel.comprobarBienvenida();
 
         viewModel.getAccionDialogo().observe(getViewLifecycleOwner(), accion -> {
-            if (accion == 1) {
+            if (accion == 1 && accion != null) {
                 mostrarDialogoSinNombre();
-            } else if (accion == 2) {
-                PendientesEntidad p = viewModel.getPendienteEncontrado().getValue();
+            }
+        });
+
+        viewModel.getPendienteEncontrado().observe(getViewLifecycleOwner(), p -> {
+            Integer accion = viewModel.getAccionDialogo().getValue();
+            if (accion != null && accion == 2 && p != null) {
                 mostrarDialogoConPendiente(p);
             }
         });
@@ -103,7 +107,6 @@ public class ExplorarFragment extends Fragment {
     }
 
     private void mostrarDialogoConPendiente(PendientesEntidad p) {
-        if (p == null) return;
 
         String nombre = viewModel.getNombreUsuario().getValue();
         String nombreFinal = (nombre != null && !nombre.isEmpty()) ? nombre : "Usuario";

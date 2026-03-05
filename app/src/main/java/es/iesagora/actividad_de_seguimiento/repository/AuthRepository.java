@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.internal.bind.ObjectTypeAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,8 +103,11 @@ public class AuthRepository {
     public void actualizarNombreUsuario(String nuevoNombre, AuthCallback callback) {
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("displayName", nuevoNombre);
+
             FirebaseFirestore.getInstance().collection("users").document(user.getUid())
-                    .update("displayName", nuevoNombre)
+                    .set(data, com.google.firebase.firestore.SetOptions.merge())
                     .addOnSuccessListener(aVoid -> callback.onSuccess(user))
                     .addOnFailureListener(e -> callback.onError(e.getMessage()));
         }
