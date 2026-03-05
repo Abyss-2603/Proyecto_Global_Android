@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/iniciarSesionFragment">
+
+    <fragment
+        android:id="@+id/iniciarSesionFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.IniciarSesionFragment"
+        android:label="Iniciar Sesión"
+        tools:layout="@layout/fragment_iniciar_sesion">
+
+        <action
+            android:id="@+id/action_iniciarSesionFragment_to_registroFragment"
+            app:destination="@id/registroFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registroFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.RegistroFragment"
+        android:label="Registro"
+        tools:layout="@layout/fragment_registro">
+
+        <action
+            android:id="@+id/action_registroFragment_to_iniciarSesionFragment"
+            app:destination="@id/iniciarSesionFragment"
+            app:popUpTo="@id/iniciarSesionFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

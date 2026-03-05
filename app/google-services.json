@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "263759030783",
+    "project_id": "actividad-de-seguimiento",
+    "storage_bucket": "actividad-de-seguimiento.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263759030783:android:f4f06243194ca43b88dfca",
+        "android_client_info": {
+          "package_name": "es.iesagora.actividad_de_seguimiento"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAzmEZay-Og2xaeG8xt247ba0n0C-NDOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

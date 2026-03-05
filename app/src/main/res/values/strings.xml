@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Actividad_de_Seguimiento</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="default_web_client_id">263759030783-hm0d0uqbomf0ifscr5omop52r936h4bf.apps.googleusercontent.com</string>
+</resources>

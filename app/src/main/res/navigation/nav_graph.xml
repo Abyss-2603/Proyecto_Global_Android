@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/explorarFragment">
+
+    <fragment
+        android:id="@+id/explorarFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.ExplorarFragment"
+        android:label="Explorar"
+        tools:layout="@layout/fragment_explorar" >
+
+        <action
+            android:id="@+id/action_explorarFragment_to_detallesFragment"
+            app:destination="@id/detallesFragment" />
+
+        <action
+            android:id="@+id/action_explorarFragment_to_ajustesFragment"
+            app:destination="@id/ajustesFragment" />
+
+        <action
+            android:id="@+id/action_explorarFragment_to_anadirSeguimientoFragment"
+            app:destination="@id/anadirSeguimientoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detallesFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.DetallesFragment"
+        android:label="Detalle"
+        tools:layout="@layout/fragment_detalles" >
+        <action
+            android:id="@+id/action_detallesFragment_to_explorarFragment"
+            app:destination="@id/explorarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pendientesFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.PendientesFragment"
+        android:label="Pendientes"
+        tools:layout="@layout/fragment_pendientes" >
+        <action
+            android:id="@+id/action_pendientesFragment_to_explorarFragment"
+            app:destination="@id/explorarFragment" />
+        <action
+            android:id="@+id/action_pendientesFragment_to_detallesFragment"
+            app:destination="@id/detallesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/seguimientoFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.SeguimientoFragment"
+        android:label="Seguimiento"
+        tools:layout="@layout/fragment_seguimiento" >
+        <action
+            android:id="@+id/action_seguimientoFragment_to_anadirSeguimientoFragment"
+            app:destination="@id/anadirSeguimientoFragment" />
+        <action
+            android:id="@+id/action_seguimientoFragment_to_detalleSeguimientoFragment"
+            app:destination="@id/detalleSeguimientoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/anadirSeguimientoFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.anadirSeguimientoFragment"
+        android:label="Añadir Seguimiento"
+        tools:layout="@layout/fragment_anadir_seguimiento" >
+
+        <action
+            android:id="@+id/action_anadirSeguimientoFragment_to_seguimientoFragment"
+            app:destination="@id/seguimientoFragment" />
+
+        <argument
+            android:name="tituloPreCargado"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="tipoPreCargado"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detalleSeguimientoFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.DetalleSeguimientoFragment"
+        android:label="Detalle del Seguimiento"
+        tools:layout="@layout/fragment_detalle_seguimiento">
+        <argument
+            android:name="seguimiento"
+            app:argType="es.iesagora.actividad_de_seguimiento.data.SeguimientoEntidad" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ajustesFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.ajustesFragment"
+        android:label="Ajustes"
+        tools:layout="@layout/fragment_ajustes" />
+
+</navigation>
