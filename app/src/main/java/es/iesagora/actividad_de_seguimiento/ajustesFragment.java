@@ -125,6 +125,8 @@ public class ajustesFragment extends Fragment {
         FirebaseAuth.getInstance().signOut();
         GoogleSignIn.getClient(requireContext(), new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut();
 
+        es.iesagora.actividad_de_seguimiento.viewModel.ExplorarViewModel.resetearBienvenida();
+
         Intent intent = new Intent(requireActivity(), inicioActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

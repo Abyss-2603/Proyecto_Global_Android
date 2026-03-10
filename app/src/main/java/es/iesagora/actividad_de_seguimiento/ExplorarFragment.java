@@ -78,11 +78,18 @@ public class ExplorarFragment extends Fragment {
     private void configurarLogicaBienvenida() {
         viewModel = new ViewModelProvider(this).get(ExplorarViewModel.class);
 
-        viewModel.comprobarBienvenida();
-
         viewModel.getAccionDialogo().observe(getViewLifecycleOwner(), accion -> {
-            if (accion == 1 && accion != null) {
-                mostrarDialogoSinNombre();
+            if (accion != null) {
+                if (accion == 1) {
+                    mostrarDialogoSinNombre();
+                    viewModel.resetearDialogo();
+                } else if (accion == 2) {
+                    PendientesEntidad p = viewModel.getPendienteEncontrado().getValue();
+                    if (p != null) {
+                        mostrarDialogoConPendiente(p);
+                        viewModel.resetearDialogo();
+                    }
+                }
             }
         });
 
@@ -90,8 +97,11 @@ public class ExplorarFragment extends Fragment {
             Integer accion = viewModel.getAccionDialogo().getValue();
             if (accion != null && accion == 2 && p != null) {
                 mostrarDialogoConPendiente(p);
+                viewModel.resetearDialogo();
             }
         });
+
+        viewModel.comprobarBienvenida();
     }
 
     private void mostrarDialogoSinNombre() {
@@ -126,4 +136,6 @@ public class ExplorarFragment extends Fragment {
                 .setNegativeButton("Aún no", null)
                 .show();
     }
+
+
 }

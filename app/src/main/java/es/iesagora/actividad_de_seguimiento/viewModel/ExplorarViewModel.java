@@ -37,18 +37,18 @@ public class ExplorarViewModel extends AndroidViewModel {
         authRepo.getNombreUsuario(new AuthRepository.NameCallback() {
             @Override
             public void onSuccess(String nombre) {
-                nombreUsuario.postValue(nombre);
+                nombreUsuario.setValue(nombre);
 
                 if (nombre != null && !nombre.isEmpty()) {
                     buscarPendienteAleatorio();
                 } else {
-                    accionDialogo.postValue(1);
+                    accionDialogo.setValue(1);
                 }
             }
 
             @Override
             public void onError(String message) {
-                accionDialogo.postValue(1);
+                accionDialogo.setValue(1);
             }
         });
     }
@@ -56,10 +56,10 @@ public class ExplorarViewModel extends AndroidViewModel {
     private void buscarPendienteAleatorio() {
         pendientesRepo.obtenerPendientesAleatorio().observeForever(p -> {
             if (p != null) {
-                pendienteEncontrado.postValue(p);
-                accionDialogo.postValue(2);
+                pendienteEncontrado.setValue(p);
+                accionDialogo.setValue(2);
             } else {
-                accionDialogo.postValue(0);
+                accionDialogo.setValue(0);
             }
         });
     }
@@ -70,4 +70,13 @@ public class ExplorarViewModel extends AndroidViewModel {
 
     public LiveData<Integer> getAccionDialogo() { return accionDialogo; }
     public LiveData<PendientesEntidad> getPendienteEncontrado() { return pendienteEncontrado; }
+
+
+    public void resetearDialogo() {
+        accionDialogo.setValue(0);
+    }
+
+    public static void resetearBienvenida() {
+        bienvenidaYaMostrada = false;
+    }
 }
