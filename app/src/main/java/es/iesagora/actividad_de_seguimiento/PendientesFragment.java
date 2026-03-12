@@ -49,7 +49,7 @@ public class PendientesFragment extends Fragment {
         adapter = new PendientesAdapter(new PendientesAdapter.OnItemClickListener() {
             @Override
             public void onEliminarClick(PendientesEntidad pendiente) {
-                viewModel.eliminar(pendiente);
+                viewModel.eliminarPorIdApi(pendiente.getIdAPI());
             }
 
             @Override

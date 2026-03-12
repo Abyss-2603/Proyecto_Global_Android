@@ -19,19 +19,15 @@ public class PendientesViewModel extends AndroidViewModel {
         repository = new PendientesRepository();
     }
 
-    public LiveData<List<PendientesEntidad>> obtenerPendientes() {
-        return repository.obtenerTodo();
-    }
-
-    public void insertar(PendientesEntidad entidad) {
-        repository.insertar(entidad);
-    }
-
-    public void eliminar(PendientesEntidad entidad) {
-        repository.eliminarPorIdApi(entidad.getIdAPI());
+    public void insertar(PendientesEntidad p) {
+        repository.insertar(p);
     }
 
     public void eliminarPorIdApi(int idApi) {
         repository.eliminarPorIdApi(idApi);
+    }
+
+    public LiveData<List<PendientesEntidad>> obtenerPendientes() {
+        return repository.obtenerTodo();
     }
 }

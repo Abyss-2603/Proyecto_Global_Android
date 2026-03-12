@@ -9,18 +9,18 @@ import es.iesagora.actividad_de_seguimiento.data.SeguimientoEntidad;
 import es.iesagora.actividad_de_seguimiento.repository.SeguimientoRepository;
 
 public class SeguimientoViewModel extends AndroidViewModel {
-    private es.iesagora.actividad_de_seguimiento.repository.SeguimientoRepository repository;
+    private final SeguimientoRepository repository;
 
     public SeguimientoViewModel(@NonNull Application application) {
         super(application);
-        repository = new SeguimientoRepository(application);
+        repository = new SeguimientoRepository();
     }
 
-    public void insertar(SeguimientoEntidad seguimiento) {
-        repository.insertar(seguimiento);
+    public void insertar(SeguimientoEntidad s) {
+        repository.insertar(s);
     }
 
-    public LiveData<List<SeguimientoEntidad>> obtenerSeguimientos() {
+    public LiveData<List<SeguimientoEntidad>> obtenerTodos() {
         return repository.obtenerTodos();
     }
 }

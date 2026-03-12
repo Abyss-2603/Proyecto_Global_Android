@@ -1,23 +1,18 @@
 package es.iesagora.actividad_de_seguimiento.data;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
-@Entity(tableName = "tabla_seguimiento")
 public class SeguimientoEntidad implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
     private int idApi;
     private String titulo;
     private String tipo;
     private String fecha;
     private float puntuacion;
     private String rutaImagen;
-
     private String descripcion;
     private String generos;
+
+    public SeguimientoEntidad() {}
 
     public SeguimientoEntidad(int idApi, String titulo, String tipo, String fecha, float puntuacion, String rutaImagen, String descripcion, String generos) {
         this.idApi = idApi;
@@ -30,8 +25,6 @@ public class SeguimientoEntidad implements Serializable {
         this.generos = generos;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
     public int getIdApi() { return idApi; }
     public String getTitulo() { return titulo; }
     public String getTipo() { return tipo; }
@@ -40,4 +33,13 @@ public class SeguimientoEntidad implements Serializable {
     public String getRutaImagen() { return rutaImagen; }
     public String getDescripcion() { return descripcion; }
     public String getGeneros() { return generos; }
+
+    public void setIdApi(int idApi) { this.idApi = idApi; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
+    public void setFecha(String fecha) { this.fecha = fecha; }
+    public void setPuntuacion(float puntuacion) { this.puntuacion = puntuacion; }
+    public void setRutaImagen(String rutaImagen) { this.rutaImagen = rutaImagen; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public void setGeneros(String generos) { this.generos = generos; }
 }

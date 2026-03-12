@@ -61,7 +61,7 @@ public class SeguimientoFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(SeguimientoViewModel.class);
 
-        viewModel.obtenerSeguimientos().observe(getViewLifecycleOwner(), lista -> {
+        viewModel.obtenerTodos().observe(getViewLifecycleOwner(), lista -> {
             if (lista == null || lista.isEmpty()) {
                 layoutVacio.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);

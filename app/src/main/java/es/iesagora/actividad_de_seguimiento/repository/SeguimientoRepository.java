@@ -1,35 +1,37 @@
 package es.iesagora.actividad_de_seguimiento.repository;
 
-import android.app.Application;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import es.iesagora.actividad_de_seguimiento.data.PendientesDatabase;
-import es.iesagora.actividad_de_seguimiento.data.SeguimientoDao;
 import es.iesagora.actividad_de_seguimiento.data.SeguimientoEntidad;
 
 public class SeguimientoRepository {
-    private SeguimientoDao seguimientoDao;
-    private Executor executor;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    public SeguimientoRepository(Application application) {
-        seguimientoDao = PendientesDatabase.getInstance(application).seguimientoDao();
-        executor = Executors.newSingleThreadExecutor();
+    public SeguimientoRepository() {}
+
+    private CollectionReference getColeccion() {
+        String uid = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : "anonimo";
+        return db.collection("users").document(uid).collection("seguimiento");
     }
 
     public void insertar(SeguimientoEntidad seguimiento) {
-        executor.execute(() -> {
-            int cantidad = seguimientoDao.existe(seguimiento.getIdApi(), seguimiento.getTipo());
-
-            if (cantidad == 0) {
-                seguimientoDao.insertar(seguimiento);
-            }
-        });
+        getColeccion().add(seguimiento);
     }
 
-    public LiveData<List<SeguimientoEntidad>> obtenerTodos() {
-        return seguimientoDao.obtenerTodos();
+    public MutableLiveData<List<SeguimientoEntidad>> obtenerTodos() {
+        MutableLiveData<List<SeguimientoEntidad>> liveData = new MutableLiveData<>();
+
+        getColeccion().orderBy("fecha", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (value != null) {
+                        liveData.setValue(value.toObjects(SeguimientoEntidad.class));
+                    }
+                });
+        return liveData;
     }
 }
