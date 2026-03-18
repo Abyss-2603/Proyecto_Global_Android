@@ -51,8 +51,7 @@ public class PendientesFragment extends Fragment {
             public void onEliminarClick(PendientesEntidad pendiente) {
                 viewModel.eliminarPorIdApi(pendiente.getIdAPI());
             }
-
-            @Override
+           @Override
             public void onVerDetalleClick(PendientesEntidad pendiente) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("pendiente_db", pendiente);
