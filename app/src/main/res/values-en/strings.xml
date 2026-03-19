@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tracking Activity</string>
+    <string name="nombre_usuario">Username</string>
+    <string name="idioma_preferido">Preferred language</string>
+    <string name="solo_wifi">Load images via Wi-Fi only</string>
+    <string name="solo_wifi_desc">Save mobile data by loading images only when connected to Wi-Fi</string>
+    <string name="tema">Theme</string>
+    <string name="tema_claro">Light</string>
+    <string name="tema_oscuro">Dark</string>
+    <string name="btn_guardar">Save changes</string>
+    <string name="btn_resetear">Reset preferences</string>
+    <string name="btn_cerrar_sesion">Sign Out</string>
+    <string name="cambios_guardados">Changes saved</string>
+</resources>
