@@ -31,4 +31,7 @@ public interface TMDB_API {
 
     @GET("search/tv")
     Call<SeriesAllResponse> searchSeries(@Query("query") String query);
+
+    @GET("tv/{id}")
+    Call<Series> getSeriesDetails(@Path("id") int id); //
 }
