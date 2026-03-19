@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -125,7 +124,7 @@ public class anadirSeguimientoFragment extends Fragment {
                     }
                 }
                 @Override public void onFailure(Call<PelisAllResponse> call, Throwable t) {
-                    Toast.makeText(getContext(), "Error buscando películas", Toast.LENGTH_SHORT).show();
+                    mostrarAlerta("Error", "Ocurrió un error al buscar películas en la API.");
                 }
             });
         } else {
@@ -138,7 +137,7 @@ public class anadirSeguimientoFragment extends Fragment {
                     }
                 }
                 @Override public void onFailure(Call<SeriesAllResponse> call, Throwable t) {
-                    Toast.makeText(getContext(), "Error buscando series", Toast.LENGTH_SHORT).show();
+                    mostrarAlerta("Error", "Ocurrió un error al buscar series en la API.");
                 }
             });
         }
@@ -150,11 +149,17 @@ public class anadirSeguimientoFragment extends Fragment {
 
         String[] opciones;
         if (esPelicula) {
-            if (resultadosPelis.isEmpty()) { Toast.makeText(getContext(), "No hay resultados", Toast.LENGTH_SHORT).show(); return; }
+            if (resultadosPelis.isEmpty()) {
+                mostrarAlerta("Sin resultados", "No se han encontrado películas con ese título.");
+                return;
+            }
             opciones = new String[resultadosPelis.size()];
             for (int i = 0; i < resultadosPelis.size(); i++) opciones[i] = resultadosPelis.get(i).getTitle();
         } else {
-            if (resultadosSeries.isEmpty()) { Toast.makeText(getContext(), "No hay resultados", Toast.LENGTH_SHORT).show(); return; }
+            if (resultadosSeries.isEmpty()) {
+                mostrarAlerta("Sin resultados", "No se han encontrado series con ese título.");
+                return;
+            }
             opciones = new String[resultadosSeries.size()];
             for (int i = 0; i < resultadosSeries.size(); i++) opciones[i] = resultadosSeries.get(i).getTitle();
         }
@@ -199,7 +204,7 @@ public class anadirSeguimientoFragment extends Fragment {
 
     private void guardarEnBD() {
         if (seleccionActual == null || binding.etFecha.getText().toString().isEmpty()) {
-            Toast.makeText(getContext(), "Selecciona título y fecha", Toast.LENGTH_SHORT).show();
+            mostrarAlerta("Campos incompletos", "Por favor, selecciona un título de la API y una fecha de visualización.");
             return;
         }
 
@@ -216,8 +221,7 @@ public class anadirSeguimientoFragment extends Fragment {
     }
 
     private void subirImagenASupabase() {
-        Toast.makeText(getContext(), "Subiendo imagen a Supabase...", Toast.LENGTH_SHORT).show();
-
+        mostrarAlerta("Procesando", "Guardando tu recuerdo... Por favor, espera un momento.");
         try {
             android.net.Uri uri = android.net.Uri.parse(uriImagenSeleccionada);
             java.io.InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
@@ -241,17 +245,17 @@ public class anadirSeguimientoFragment extends Fragment {
                         String urlPublica = "https://befqfexsolwccnygzxryf.supabase.co/storage/v1/object/public/" + BUCKET_NAME + "/" + nombreArchivo;
                         finalizarGuardado(urlPublica);
                     } else {
-                        Toast.makeText(getContext(), "Error Supabase: " + response.code(), Toast.LENGTH_SHORT).show();
+                        mostrarAlerta("Error en servidor", "No se pudo subir la imagen al almacenamiento remoto (Error: " + response.code() + ").");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(getContext(), "Fallo de red al subir imagen", Toast.LENGTH_SHORT).show();
+                    mostrarAlerta("Fallo de conexión", "No se ha podido subir la imagen. Comprueba tu conexión a internet.");
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(getContext(), "Error al procesar imagen", Toast.LENGTH_SHORT).show();
+            mostrarAlerta("Error local", "Hubo un problema al procesar la imagen seleccionada.");
         }
     }
 
@@ -275,7 +279,21 @@ public class anadirSeguimientoFragment extends Fragment {
         );
 
         viewModel.insertar(nuevo);
-        Toast.makeText(getContext(), "Seguimiento guardado correctamente", Toast.LENGTH_SHORT).show();
-        NavHostFragment.findNavController(this).popBackStack();
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("¡Hecho!")
+                .setMessage("El seguimiento se ha guardado correctamente.")
+                .setPositiveButton("Aceptar", (dialog, which) -> {
+                    NavHostFragment.findNavController(this).popBackStack();
+                })
+                .setCancelable(false)
+                .show();
+    }
+    private void mostrarAlerta(String titulo, String mensaje) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(titulo)
+                .setMessage(mensaje)
+                .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

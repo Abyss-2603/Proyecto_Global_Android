@@ -1,5 +1,6 @@
 package es.iesagora.actividad_de_seguimiento;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -155,7 +155,11 @@ public class ajustesFragment extends Fragment {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
 
-        Toast.makeText(getContext(), "Cambios guardados", Toast.LENGTH_SHORT).show();
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Información")
+                .setMessage("Los cambios se han guardado correctamente.")
+                .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void resetearPreferencias() {
@@ -164,7 +168,7 @@ public class ajustesFragment extends Fragment {
         cargarPreferencias();
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        Toast.makeText(getContext(), "Preferencias reseteadas", Toast.LENGTH_SHORT).show();
+        mostrarAlerta("Éxito", "Las preferencias han sido reseteadas.");
     }
 
     private void cerrarSesion() {
@@ -180,7 +184,7 @@ public class ajustesFragment extends Fragment {
     }
 
     private void subirNuevaFotoASupabase() {
-        Toast.makeText(getContext(), "Actualizando foto de perfil...", Toast.LENGTH_SHORT).show();
+        mostrarAlerta("Procesando", "Estamos actualizando tu foto de perfil...");
 
         try {
             Uri uri = Uri.parse(uriNuevaImagen);
@@ -202,15 +206,15 @@ public class ajustesFragment extends Fragment {
                                 String urlPublica = "https://beofqesolwccnygzxryf.supabase.co/storage/v1/object/public/" + BUCKET_NAME + "/" + nombreArchivo;
                                 actualizarPerfilFirebase(urlPublica);
                             } else {
-                                Toast.makeText(getContext(), "Error subiendo la foto", Toast.LENGTH_SHORT).show();
+                                mostrarAlerta("Error", "No se pudo subir la foto al servidor.");
                             }
                         }
                         @Override public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(getContext(), "Fallo de conexión", Toast.LENGTH_SHORT).show();
+                            mostrarAlerta("Fallo de conexión", "Comprueba tu conexión a internet.");
                         }
                     });
         } catch (Exception e) {
-            Toast.makeText(getContext(), "Error procesando imagen", Toast.LENGTH_SHORT).show();
+            mostrarAlerta("Error", "Ocurrió un problema al procesar la imagen seleccionada.");
         }
     }
 
@@ -226,9 +230,15 @@ public class ajustesFragment extends Fragment {
                     FirebaseFirestore.getInstance().collection("users").document(user.getUid())
                             .update("fotoUrl", urlPublica);
 
-                    Toast.makeText(getContext(), "¡Foto actualizada correctamente!", Toast.LENGTH_SHORT).show();
-                }
+                    mostrarAlerta("Éxito", "¡Tu foto de perfil se ha actualizado correctamente!");                }
             });
         }
+    }
+    private void mostrarAlerta(String titulo, String mensaje) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(titulo)
+                .setMessage(mensaje)
+                .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

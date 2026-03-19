@@ -1,5 +1,6 @@
 package es.iesagora.actividad_de_seguimiento;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -95,7 +95,7 @@ public class RegistroFragment extends Fragment {
             btnRegister.setEnabled(!state.loading);
 
             if (state.error != null) {
-                Toast.makeText(getContext(), state.error, Toast.LENGTH_SHORT).show();
+                mostrarAlerta("Error de Registro", state.error);
                 state.error = null;
             }
 
@@ -149,18 +149,18 @@ public class RegistroFragment extends Fragment {
                                 String urlPublica = "https://beofqesolwccnygzxryf.supabase.co/storage/v1/object/public/" + BUCKET_NAME + "/" + nombreArchivo;
                                 viewModel.register(email, password, nombre, urlPublica);
                             } else {
-                                Toast.makeText(getContext(), "Error subiendo la foto", Toast.LENGTH_SHORT).show();
+                                mostrarAlerta("Error", "No se pudo subir la foto de perfil al servidor.");
                                 restaurarUI();
                             }
                         }
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(getContext(), "Fallo de conexión al subir foto", Toast.LENGTH_SHORT).show();
+                            mostrarAlerta("Fallo de conexión", "Comprueba tu conexión a internet para subir la foto.");
                             restaurarUI();
                         }
                     });
         } catch (Exception e) {
-            Toast.makeText(getContext(), "Error procesando la imagen", Toast.LENGTH_SHORT).show();
+            mostrarAlerta("Error", "Hubo un problema al procesar la imagen seleccionada.");
             restaurarUI();
         }
     }
@@ -189,5 +189,15 @@ public class RegistroFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        if (getContext() != null) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle(titulo)
+                    .setMessage(mensaje)
+                    .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                    .show();
+        }
     }
 }

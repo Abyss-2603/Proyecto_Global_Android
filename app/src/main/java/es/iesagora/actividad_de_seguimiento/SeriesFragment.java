@@ -1,10 +1,10 @@
 package es.iesagora.actividad_de_seguimiento;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -95,7 +95,7 @@ public class SeriesFragment extends Fragment {
                     break;
                 case ERROR:
                     binding.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), resource.message, Toast.LENGTH_SHORT).show();
+                    mostrarAlerta("Error de carga", "Ocurrió un problema al obtener las series: " + resource.message);
                     break;
             }
         });
@@ -105,5 +105,15 @@ public class SeriesFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        if (getContext() != null) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle(titulo)
+                    .setMessage(mensaje)
+                    .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                    .show();
+        }
     }
 }

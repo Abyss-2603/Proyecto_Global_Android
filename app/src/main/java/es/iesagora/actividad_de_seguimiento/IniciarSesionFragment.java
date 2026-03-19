@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -75,7 +74,7 @@ public class IniciarSesionFragment extends Fragment {
             btnLogin.setEnabled(!state.loading);
 
             if (state.error != null) {
-                Toast.makeText(getContext(), state.error, Toast.LENGTH_SHORT).show();
+                mostrarAlerta("Error de Autenticación", state.error);
                 state.error = null;
             }
 
@@ -92,7 +91,7 @@ public class IniciarSesionFragment extends Fragment {
             if (!email.isEmpty() && !pass.isEmpty()) {
                 viewModel.login(email, pass);
             } else {
-                Toast.makeText(getContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show();
+                mostrarAlerta("Campos incompletos", "Por favor, rellena todos los campos para iniciar sesión.");
             }
         });
 
@@ -115,7 +114,7 @@ public class IniciarSesionFragment extends Fragment {
                         GoogleSignInAccount account = task.getResult(ApiException.class);
                         viewModel.loginWithGoogle(account.getIdToken());
                     } catch (ApiException e) {
-                        Toast.makeText(getContext(), "Error Google: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        mostrarAlerta("Error Google", "No se pudo completar el inicio de sesión con Google: " + e.getMessage());
                     }
                 }
             }
@@ -133,5 +132,15 @@ public class IniciarSesionFragment extends Fragment {
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        if (getContext() != null) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle(titulo)
+                    .setMessage(mensaje)
+                    .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                    .show();
+        }
     }
 }

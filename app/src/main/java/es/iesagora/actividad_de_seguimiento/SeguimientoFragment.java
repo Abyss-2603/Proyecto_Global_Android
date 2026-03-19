@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -106,7 +105,7 @@ public class SeguimientoFragment extends Fragment {
                         recyclerView.setVisibility(View.GONE);
 
                         if (!queryTitulo.isEmpty() || filtroPuntMin != null || filtroFechaIni != null) {
-                            Toast.makeText(getContext(), "No se encontraron resultados", Toast.LENGTH_SHORT).show();
+                            mostrarAlerta("Sin resultados", "No se encontraron seguimientos que coincidan con los filtros aplicados.");
                         }
                     } else {
                         layoutVacio.setVisibility(View.GONE);
@@ -193,7 +192,7 @@ public class SeguimientoFragment extends Fragment {
             float max = Float.parseFloat(spinMax.getSelectedItem().toString());
 
             if (min > max) {
-                Toast.makeText(getContext(), "Error: La puntuación mínima no puede ser mayor a la máxima", Toast.LENGTH_LONG).show();
+                mostrarAlerta("Error de validación", "La puntuación mínima no puede ser mayor a la máxima.");
                 return;
             }
 
@@ -217,5 +216,15 @@ public class SeguimientoFragment extends Fragment {
             String mes = (m + 1) < 10 ? "0" + (m + 1) : String.valueOf(m + 1);
             editText.setText(dia + "/" + mes + "/" + y);
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        if (getContext() != null) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle(titulo)
+                    .setMessage(mensaje)
+                    .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                    .show();
+        }
     }
 }

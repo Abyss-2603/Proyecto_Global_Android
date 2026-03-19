@@ -1,5 +1,6 @@
 package es.iesagora.actividad_de_seguimiento;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -7,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -110,7 +110,7 @@ public class PelisFragment extends Fragment {
 
                                 pendientesViewModel.insertar(entidad);
 
-                                Toast.makeText(getContext(), "Guardada (sin detalles de duración)", Toast.LENGTH_SHORT).show();
+                                mostrarAlerta("Información", "Película guardada (los detalles de duración no están disponibles en este momento).");
                             }
                         });
 
@@ -156,7 +156,7 @@ public class PelisFragment extends Fragment {
                     break;
                 case ERROR:
                     binding.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), resource.message, Toast.LENGTH_SHORT).show();
+                    mostrarAlerta("Error de carga", "No se han podido obtener las películas: " + resource.message);
                     break;
             }
         });
@@ -184,5 +184,15 @@ public class PelisFragment extends Fragment {
         }
 
         adapter.setList(listaApi);
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        if (getContext() != null) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle(titulo)
+                    .setMessage(mensaje)
+                    .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                    .show();
+        }
     }
 }
