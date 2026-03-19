@@ -3,10 +3,13 @@ package es.iesagora.actividad_de_seguimiento.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,14 +39,13 @@ public class ComentarioAdapter extends RecyclerView.Adapter<ComentarioAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comentario c = mComentarios.get(position);
 
-
-        holder.tvNombre.setText(c.getAuthorName());
-        holder.tvTexto.setText(c.getText());
-
-
-        if (c.getAuthorName() != null && !c.getAuthorName().isEmpty()) {
-            holder.tvAvatar.setText(c.getAuthorName().substring(0, 1).toUpperCase());
+        String nombre = c.getAuthorName();
+        if (nombre == null || nombre.trim().isEmpty()) {
+            nombre = "Usuario";
         }
+        holder.tvNombre.setText(nombre);
+
+        holder.tvTexto.setText(c.getText());
 
         if (c.getCreatedAt() != null) {
             if (c.getCreatedAt() instanceof com.google.firebase.Timestamp) {
@@ -53,19 +55,31 @@ public class ComentarioAdapter extends RecyclerView.Adapter<ComentarioAdapter.Vi
             } else {
                 holder.tvFecha.setText("Hace un momento");
             }
-        }    }
+        }
+
+        String urlFoto = c.getFotoUrl();
+        if (urlFoto == null || urlFoto.trim().isEmpty()) {
+            urlFoto = "https://beofqesolwccnygzxryf.supabase.co/storage/v1/object/public/recuerdos/avatar_defecto.png";
+        }
+
+        Glide.with(holder.itemView.getContext())
+                .load(urlFoto)
+                .into(holder.ivAvatarComentario);
+    }
 
     @Override
     public int getItemCount() { return mComentarios.size(); }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNombre, tvTexto, tvAvatar, tvFecha;
+        TextView tvNombre, tvTexto, tvFecha;
+        ImageView ivAvatarComentario;
+
         ViewHolder(View v) {
             super(v);
             tvNombre = v.findViewById(R.id.tvNombreUsuario);
             tvTexto = v.findViewById(R.id.tvContenidoComentario);
-            tvAvatar = v.findViewById(R.id.tvAvatar);
             tvFecha = v.findViewById(R.id.tvFecha);
+            ivAvatarComentario = v.findViewById(R.id.ivAvatarComentario);
         }
     }
 }

@@ -29,14 +29,22 @@ public class AuthRepository {
                 .addOnFailureListener(e -> callback.onError(mapError(e)));
     }
 
-    public void register(String email, String password, String nombre, AuthCallback callback) {
+    public void register(String email, String password, String nombre, String fotoUrl, AuthCallback callback) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(result -> {
                     FirebaseUser user = auth.getCurrentUser();
                     if (user != null) {
+                        com.google.firebase.auth.UserProfileChangeRequest.Builder profileUpdates =
+                                new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                                        .setDisplayName(nombre);
+                        if (fotoUrl != null) {
+                            profileUpdates.setPhotoUri(android.net.Uri.parse(fotoUrl));
+                        }
+                        user.updateProfile(profileUpdates.build());
                         Map<String, Object> userData = new HashMap<>();
                         userData.put("displayName", nombre);
                         userData.put("email", email);
+                        if (fotoUrl != null) userData.put("fotoUrl", fotoUrl);
                         userData.put("createdAt", FieldValue.serverTimestamp());
 
                         FirebaseFirestore.getInstance().collection("users").document(user.getUid())

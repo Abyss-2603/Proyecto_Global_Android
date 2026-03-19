@@ -60,7 +60,8 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
 
         String urlImagen = "https://image.tmdb.org/t/p/w500" + serie.getBackdropPath();
 
-        int nTemporadas = serie.getRuntime();
+        int nTemporadas = serie.getNumberOfSeasons();
+        if (nTemporadas <= 0) nTemporadas = 4;
         String tempStr = nTemporadas + (nTemporadas == 1 ? " temporada" : " temporadas");
         if (nTemporadas == 0) tempStr = "1 temporada";
 

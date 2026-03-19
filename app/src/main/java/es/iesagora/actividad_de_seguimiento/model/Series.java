@@ -30,8 +30,8 @@ public class Series implements Serializable {
     @SerializedName("genre_ids")
     private List<Integer> genreIds;
 
-    @SerializedName("duracion")
-    private int runtime;
+    @SerializedName("number_of_seasons")
+    private int numberOfSeasons;
 
     @SerializedName("seleccionado")
     private boolean seleccionado;
@@ -76,7 +76,7 @@ public class Series implements Serializable {
         return genreIds;
     }
 
-    public int getRuntime() {
-        return runtime;
+    public int getNumberOfSeasons() {
+        return numberOfSeasons;
     }
 }

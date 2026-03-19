@@ -83,13 +83,19 @@ public class DetallesFragment extends Fragment {
     }
 
     private void guardarComentario(String mensaje) {
-        authViewModel.getNombreUsuario().observe(getViewLifecycleOwner(), nombre -> {
-            String uid = authViewModel.getCurrentUser().getUid();
+        com.google.firebase.auth.FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            String uid = user.getUid();
+            String nombre = user.getDisplayName() != null ? user.getDisplayName() : "Usuario";
+
+            String fotoUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "https://beofqesolwccnygzxryf.supabase.co/storage/v1/object/public/recuerdos/avatar_defecto.png";
 
             Comentario nuevo = new Comentario(
                     uid,
                     nombre,
                     mensaje,
+                    fotoUrl,
                     com.google.firebase.firestore.FieldValue.serverTimestamp()
             );
 
@@ -98,7 +104,7 @@ public class DetallesFragment extends Fragment {
                     .collection("comments")
                     .add(nuevo)
                     .addOnSuccessListener(ref -> binding.etNuevoComentario.setText(""));
-        });
+        }
     }
 
     private void escucharComentarios() {
@@ -172,7 +178,7 @@ public class DetallesFragment extends Fragment {
         binding.tvDetalleTitulo.setText(serie.getTitle());
         binding.tvSinopsis.setText(serie.getOverview());
 
-        int temporadas = (serie.getRuntime() > 0) ? serie.getRuntime() : 4;
+        int temporadas = (serie.getNumberOfSeasons() > 0) ? serie.getNumberOfSeasons() : 4;
         binding.tvDetalleSubtituloHeader.setText(temporadas + " temporadas • Netflix");
 
         binding.tvInfoTipo.setText("Serie de TV");

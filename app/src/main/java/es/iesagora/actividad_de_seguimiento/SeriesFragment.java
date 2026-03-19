@@ -53,7 +53,11 @@ public class SeriesFragment extends Fragment {
                 (serie, isChecked) -> {
                     if (isChecked) {
                         String generosStr = Generos.getGeneros(serie.getGenreIds());
-                        int temps = serie.getRuntime();
+
+                        int temps = serie.getNumberOfSeasons();
+                        if (temps <= 0) {
+                            temps = 4;
+                        }
                         String infoStr = temps + (temps == 1 ? " temporada" : " temporadas");
 
                         PendientesEntidad entidad = new PendientesEntidad(

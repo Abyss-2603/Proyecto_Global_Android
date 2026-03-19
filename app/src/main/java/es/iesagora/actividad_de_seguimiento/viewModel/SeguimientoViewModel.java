@@ -23,4 +23,17 @@ public class SeguimientoViewModel extends AndroidViewModel {
     public LiveData<List<SeguimientoEntidad>> obtenerTodos() {
         return repository.obtenerTodos();
     }
+
+    public LiveData<List<SeguimientoEntidad>> obtenerFiltrados(String tipo) {
+        return repository.obtenerFiltrados(tipo);
+    }
+
+    public LiveData<List<SeguimientoEntidad>> obtenerSeguimientosFiltrados(
+            String titulo, Float minPunt, Float maxPunt,
+            String fechaIni, String fechaFin,
+            String campoOrden, com.google.firebase.firestore.Query.Direction direccion) {
+
+        return repository.obtenerConFiltrosBD(titulo, minPunt, maxPunt, fechaIni, fechaFin, campoOrden, direccion);
+    }
+
 }

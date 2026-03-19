@@ -55,10 +55,10 @@ public class AuthViewModel extends AndroidViewModel {
     }
 
 
-    public void register(String email, String password, String nombre) {
+    public void register(String email, String password, String nombre, String fotoUrl) {
         authState.setValue(AuthState.loading());
 
-        repo.register(email, password, nombre, new AuthRepository.AuthCallback() {
+        repo.register(email, password, nombre, fotoUrl, new AuthRepository.AuthCallback() {
             @Override
             public void onSuccess(FirebaseUser user) {
                 authState.postValue(AuthState.success(user));
