@@ -50,6 +50,9 @@ public class anadirSeguimientoFragment extends Fragment {
 
     private String uriImagenSeleccionada = null;
 
+    private static final String SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlb2ZxZXNvbHdjY255Z3p4cnlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NjAzNzQsImV4cCI6MjA4OTQzNjM3NH0.EXAzznDtiB1_Q50Yno25HA6K96Xt74jU-rnyrYcoLsI";
+    private static final String BUCKET_NAME = "recuerdos";
+
     private ActivityResultLauncher<String> galleryLauncher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             uri -> {
@@ -200,50 +203,79 @@ public class anadirSeguimientoFragment extends Fragment {
             return;
         }
 
-        int idApi = 0;
-        String titulo = "";
-        String tipo = binding.rbPelicula.isChecked() ? "PELICULA" : "SERIE";
-        String generos = "";
-        String desc = "";
-        String posterPath = "";
+        if (uriImagenSeleccionada != null) {
+            subirImagenASupabase();
+        } else {
+            String posterPath = "";
+            if (seleccionActual instanceof Peliculas) posterPath = ((Peliculas) seleccionActual).getPosterPath();
+            else posterPath = ((Series) seleccionActual).getPosterPath();
+
+            String imagenFinal = (posterPath != null && !posterPath.isEmpty()) ? "https://image.tmdb.org/t/p/w500" + posterPath : "";
+            finalizarGuardado(imagenFinal);
+        }
+    }
+
+    private void subirImagenASupabase() {
+        Toast.makeText(getContext(), "Subiendo imagen a Supabase...", Toast.LENGTH_SHORT).show();
+
+        try {
+            android.net.Uri uri = android.net.Uri.parse(uriImagenSeleccionada);
+            java.io.InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes);
+            inputStream.close();
+
+            okhttp3.RequestBody requestFile = okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/jpeg"), bytes);
+            String nombreArchivo = System.currentTimeMillis() + ".jpg";
+            okhttp3.MultipartBody.Part body = okhttp3.MultipartBody.Part.createFormData("file", nombreArchivo, requestFile);
+
+            es.iesagora.actividad_de_seguimiento.api_rest.SupabaseStorageApi storageApi =
+                    es.iesagora.actividad_de_seguimiento.api_rest.SupabaseClient.getClient().create(es.iesagora.actividad_de_seguimiento.api_rest.SupabaseStorageApi.class);
+
+            Call<Void> call = storageApi.uploadImage("Bearer " + SUPABASE_KEY, BUCKET_NAME, nombreArchivo, body);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        String urlPublica = "https://befqfexsolwccnygzxryf.supabase.co/storage/v1/object/public/" + BUCKET_NAME + "/" + nombreArchivo;
+                        finalizarGuardado(urlPublica);
+                    } else {
+                        Toast.makeText(getContext(), "Error Supabase: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getContext(), "Fallo de red al subir imagen", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Error al procesar imagen", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void finalizarGuardado(String urlImagen) {
+        int idApi = 0; String titulo = ""; String tipo = binding.rbPelicula.isChecked() ? "PELICULA" : "SERIE";
+        String generos = ""; String desc = "";
 
         if (seleccionActual instanceof Peliculas) {
             Peliculas p = (Peliculas) seleccionActual;
-            idApi = p.getId();
-            titulo = p.getTitle();
-            desc = p.getOverview();
+            idApi = p.getId(); titulo = p.getTitle(); desc = p.getOverview();
             generos = Generos.getGeneros(p.getGenreIds());
-            posterPath = p.getPosterPath();
         } else {
             Series s = (Series) seleccionActual;
-            idApi = s.getId();
-            titulo = s.getTitle();
-            desc = s.getOverview();
+            idApi = s.getId(); titulo = s.getTitle(); desc = s.getOverview();
             generos = Generos.getGeneros(s.getGenreIds());
-            posterPath = s.getPosterPath();
-        }
-
-        String imagenFinal;
-        if (uriImagenSeleccionada != null) {
-            imagenFinal = uriImagenSeleccionada;
-        } else {
-            if (posterPath != null && !posterPath.isEmpty()) {
-                imagenFinal = "https://image.tmdb.org/t/p/w500" + posterPath;
-            } else {
-                imagenFinal = "";
-            }
         }
 
         SeguimientoEntidad nuevo = new SeguimientoEntidad(
-                idApi, titulo, tipo,
-                binding.etFecha.getText().toString(),
-                binding.ratingBar.getRating(),
-                imagenFinal,
-                desc, generos
+                idApi, titulo, tipo, binding.etFecha.getText().toString(),
+                binding.ratingBar.getRating(), urlImagen, desc, generos
         );
 
         viewModel.insertar(nuevo);
-        Toast.makeText(getContext(), "Seguimiento guardado", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Seguimiento guardado correctamente", Toast.LENGTH_SHORT).show();
         NavHostFragment.findNavController(this).popBackStack();
     }
 }
