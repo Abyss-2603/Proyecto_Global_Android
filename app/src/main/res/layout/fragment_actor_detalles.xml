@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="100dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivActorDetalleFoto"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+            app:strokeColor="#EEEEEE"
+            app:strokeWidth="4dp"
+            android:src="@android:drawable/ic_menu_gallery" />
+
+        <TextView
+            android:id="@+id/tvActorDetalleNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivActorDetalleFoto"
+            android:text="Nombre Completo" />
+
+        <ImageButton
+            android:id="@+id/btnSeguirActor"
+            android:layout_width="40dp"
+            android:layout_height="42dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            android:src="@drawable/estrella_vacia"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.956"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvDatosPersonales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="25dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tvActorDetalleNombre"
+            app:strokeColor="#EEEEEE"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Datos Personales"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="6dp">
+                    <TextView android:text="Nacimiento" android:textColor="#888888" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    <TextView android:id="@+id/tvActorNacimiento" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:textColor="@color/black" android:textStyle="bold" android:text="--/--/----"/>
+                </RelativeLayout>
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="6dp">
+                    <TextView android:text="Lugar" android:textColor="#888888" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    <TextView android:id="@+id/tvActorLugarNacimiento" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_marginStart="80dp" android:textColor="@color/black" android:textStyle="bold" android:gravity="end" android:text="Ciudad, País"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/lblBiografia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="30dp"
+            android:text="Biografía"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cvDatosPersonales" />
+
+        <TextView
+            android:id="@+id/tvActorBiografia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:textColor="#444444"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/lblBiografia"
+            android:text="Cargando biografía..."/>
+
+        <View
+            android:id="@+id/dividerActor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="30dp"
+            android:background="#EEEEEE"
+            app:layout_constraintTop_toBottomOf="@id/tvActorBiografia" />
+
+        <TextView
+            android:id="@+id/lblFilmografia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="25dp"
+            android:text="Películas y Series relevantes"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dividerActor" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvActorFilmografia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/lblFilmografia"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

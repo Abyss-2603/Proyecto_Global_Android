@@ -14,4 +14,6 @@
     <string name="cambios_guardados">Cambios guardados</string>
 
     <string name="default_web_client_id">263759030783-hm0d0uqbomf0ifscr5omop52r936h4bf.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

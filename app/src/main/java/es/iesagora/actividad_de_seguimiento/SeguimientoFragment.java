@@ -78,13 +78,30 @@ public class SeguimientoFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(SeguimientoViewModel.class);
 
-        etBuscar.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                queryTitulo = s.toString();
+
+        etBuscar.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
+                queryTitulo = etBuscar.getText().toString().trim();
                 aplicarFiltrosBD();
+
+                android.view.inputmethod.InputMethodManager imm =
+                        (android.view.inputmethod.InputMethodManager) requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                return true;
             }
-            @Override public void afterTextChanged(Editable s) {}
+            return false;
+        });
+
+        etBuscar.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void afterTextChanged(Editable s) {
+                if (s.toString().trim().isEmpty() && !queryTitulo.isEmpty()) {
+                    queryTitulo = "";
+                    aplicarFiltrosBD();
+                }
+            }
         });
 
         btnOrdenar.setOnClickListener(v -> mostrarMenuOrdenar());

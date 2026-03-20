@@ -90,14 +90,38 @@
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/labelSinopsis" />
 
+        <TextView
+            android:id="@+id/lblReparto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="25dp"
+            android:text="Reparto principal"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSinopsis" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvReparto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/lblReparto" />
+
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:background="#EEEEEE"
-            app:layout_constraintTop_toBottomOf="@id/tvSinopsis" />
+            app:layout_constraintTop_toBottomOf="@id/rvReparto" />
 
         <TextView
             android:id="@+id/lblInfo"
@@ -109,6 +133,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider" />
 
         <LinearLayout

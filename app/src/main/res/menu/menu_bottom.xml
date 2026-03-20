@@ -14,4 +14,9 @@
         android:id="@+id/seguimientoFragment"
         android:icon="@drawable/tabla_de_crecimiento"
         android:title="Seguimiento" />
+
+    <item
+        android:id="@+id/actoresFavoritosFragment"
+        android:icon="@drawable/actor"
+        android:title="Actores" />
 </menu>

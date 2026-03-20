@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_detallesFragment_to_explorarFragment"
             app:destination="@id/explorarFragment" />
+        <action
+            android:id="@+id/action_detallesFragment_to_actorDetallesFragment"
+            app:destination="@id/actorDetallesFragment" />
     </fragment>
 
     <fragment
@@ -97,5 +100,24 @@
         android:name="es.iesagora.actividad_de_seguimiento.ajustesFragment"
         android:label="Ajustes"
         tools:layout="@layout/fragment_ajustes" />
+    <fragment
+        android:id="@+id/actorDetallesFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.ActorDetallesFragment"
+        android:label="Detalles del Ac"
+        tools:layout="@layout/fragment_actor_detalles" >
+        <action
+            android:id="@+id/action_actorDetallesFragment_to_detallesFragment"
+            app:destination="@id/detallesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/actoresFavoritosFragment"
+        android:name="es.iesagora.actividad_de_seguimiento.ActoresFavoritosFragment"
+        android:label="Actores Favoritos"
+        tools:layout="@layout/fragment_actores_favoritos" >
+        <action
+            android:id="@+id/action_actoresFavoritosFragment_to_actorDetallesFragment"
+            app:destination="@id/actorDetallesFragment" />
+    </fragment>
 
 </navigation>
